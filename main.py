@@ -18,45 +18,45 @@ r"""°°°
 # Truck Loading and Delivery Routes (TLDR)
 
 Problem Statement:
-    - Automate assigning customer orders to trucks.
-    - Optimize truck routes to ensure they arrive at customers via the shortest path.
+- Automate assigning customer orders to trucks.
+- Optimize truck routes to ensure they arrive at customers via the shortest path.
 
 Data:
-    - order
-    - customer
-    - product
-    - truck
+- order
+- customer
+- product
+- truck
 
 order:
-    - Customer # : The unique identifier for each customer.
-    - Invoice # : The unique identifier for each order.
-    - Item # : The unique identifier for the product being ordered.
-    - SalesQty : The quantity of the product ordered.
+- Customer # : The unique identifier for each customer.
+- Invoice # : The unique identifier for each order.
+- Item # : The unique identifier for the product being ordered.
+- SalesQty : The quantity of the product ordered.
 
 customer:
-    - customerNo : The unique identifier for each customer.
-    - Latitude : The geographical latitude of the customer's location.
-    - Longitude : The geographical longitude of the customer's location.
+- customerNo : The unique identifier for each customer.
+- Latitude : The geographical latitude of the customer's location.
+- Longitude : The geographical longitude of the customer's location.
 
 product:
-    - Item # : The unique identifier for the product.
-    - Product Name : The name of the product.
-    - Can Size (in mL) : The size of the product can in milliliters.
-    - Can (in case) : Number of cans per case.
-    - Packaging (carton) : Details about how the product is packaged in cartons.
-    - Pallet Size (carton) : The size of the pallet containing cartons.
-    - Cases per Pallet : The number of cases that fit on a pallet.
-    - Gross Carton Weight (in Kg) : The weight of the carton in kilograms.
-    - Carton Length (in cm) : The length of the carton in centimeters.
-    - Carton Width (in cm) : The width of the carton in centimeters.
-    - Carton Height (in cm) : The height of the carton in centimeters.
+- Item # : The unique identifier for the product.
+- Product Name : The name of the product.
+- Can Size (in mL) : The size of the product can in milliliters.
+- Can (in case) : Number of cans per case.
+- Packaging (carton) : Details about how the product is packaged in cartons.
+- Pallet Size (carton) : The size of the pallet containing cartons.
+- Cases per Pallet : The number of cases that fit on a pallet.
+- Gross Carton Weight (in Kg) : The weight of the carton in kilograms.
+- Carton Length (in cm) : The length of the carton in centimeters.
+- Carton Width (in cm) : The width of the carton in centimeters.
+- Carton Height (in cm) : The height of the carton in centimeters.
 
 truck:
-    - Truck ID : The unique identifier for each truck.
-    - Truck Name : The name or model of the truck.
-    - Capacity (Pallets) : The truck's carrying capacity in terms of pallets.
-    - Multiple Trips (# of trips) : The number of trips the truck can make.
-    - Priority : The priority level assigned to the truck for deliveries.
+- Truck ID : The unique identifier for each truck.
+- Truck Name : The name or model of the truck.
+- Capacity (Pallets) : The truck's carrying capacity in terms of pallets.
+- Multiple Trips (# of trips) : The number of trips the truck can make.
+- Priority : The priority level assigned to the truck for deliveries.
 
 °°°"""
 
@@ -370,10 +370,10 @@ r"""°°°
 coords = np.radians(customer[['Latitude', 'Longitude']])
 
 # Set the maximum distance (in kilometers) for clustering
-eps_km = 5  # Adjust this value to set the clustering range in kilometers
+eps_km = 4  # Adjust this value to set the clustering range in kilometers
 
 # Earth radius in kilometers
-earth_radius_km = 300.0
+earth_radius_km = 6371.0
 
 # Perform DBSCAN clustering
 db = DBSCAN(eps=eps_km / earth_radius_km, min_samples=2, metric='haversine').fit(coords)
@@ -422,7 +422,32 @@ customer_orders.merge(
 
 
 
-#|%%--%%| <6InNtycW8y|RNQ75sf65B>
+#|%%--%%| <6InNtycW8y|u5xlp5o3Yo>
+
+customer_id = customer[customer.columns[0]].iloc[3]
+invoices = order[order[order.columns[0]] == customer_id].groupby(order.columns[1])
+for invoice in invoices:
+    # print(invoice[0], invoice[1])
+    invoice_value = invoice[1]
+    print(invoice_value)
+
+
+    invoice_items = invoice_value[invoice_value.columns[2]]
+    print(invoice_items)
+    # print(invoice_items)
+    for item in invoice_items:
+        # print(item)
+        _product = product[item == product[product.columns[0]]])
+
+        
+
+
+    
+
+#|%%--%%| <u5xlp5o3Yo|GdbVdA4xus>
+
+
+#|%%--%%| <GdbVdA4xus|RNQ75sf65B>
 
 
 
