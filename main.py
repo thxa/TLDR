@@ -1,4 +1,5 @@
 import os
+from jinja2.environment import create_cache
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -107,6 +108,11 @@ for i in [7, 8, 10]:
     product[product.columns[i]] = product[product.columns[i]].apply(converter).apply(float)
 
 
+
+# for i in [7, 8, 10]:
+#     product[product.columns[i]] = product[product.columns[i]].apply(converter).apply(float)
+
+
 #|%%--%%| <ixu2u4NKf9|Vo3wspte9e>
 
 # print(order.head(5))
@@ -165,48 +171,6 @@ with sqlite3.connect("database.db") as conn:
 r"""°°°
 ### Visualize Customer Locations in grid
 °°°"""
-#|%%--%%| <L62IfRTi9D|Jripcl8s3h>
-
-plt.figure(figsize=(10, 6))
-plt.scatter(customer['Longitude'], customer['Latitude'], c='blue', marker='o')
-
-plt.title('Customer Locations')
-plt.xlabel('Longitude')
-plt.ylabel('Latitude')
-plt.grid(True)
-
-plt.show()
-
-#|%%--%%| <Jripcl8s3h|D6Pet5wRwZ>
-
-# Prepare the data for clustering
-coordinates = np.array(list(zip(customer['Latitude'], customer['Longitude'])))
-
-# Perform KMeans clustering (e.g., 3 clusters)
-kmeans = KMeans(n_clusters=3)
-kmeans.fit(coordinates)
-labels = kmeans.labels_
-
-# Plot the clusters
-plt.figure(figsize=(10, 6))
-plt.scatter(customer['Longitude'], customer['Latitude'], c=labels, cmap='viridis', marker='o')
-
-# Add cluster centers
-centers = kmeans.cluster_centers_
-plt.scatter(centers[:, 1], centers[:, 0], c='red', marker='x')
-
-# Add labels and title
-plt.title('Customer Clusters')
-plt.xlabel('Longitude')
-plt.ylabel('Latitude')
-plt.grid(True)
-
-# Show the plot
-plt.show()
-
-#|%%--%%| <D6Pet5wRwZ|u3Pvm8GAhb>
-
-
 target_customer = (21.501795, 39.24419833)
 distances = []
 
@@ -220,35 +184,7 @@ nearest_customer_no = customer['customerNo'][nearest_index]
 
 print(f'The nearest customer to 102215 is: {nearest_customer_no}')
 
-#|%%--%%| <u3Pvm8GAhb|WWABaGetnF>
-
-# Prepare the data for clustering
-coordinates = np.array(list(zip(customer['Latitude'], customer['Longitude'])))
-
-# Perform KMeans clustering (e.g., 3 clusters)
-kmeans = KMeans(n_clusters=3)
-kmeans.fit(coordinates)
-labels = kmeans.labels_
-
-# Plot the clusters
-plt.figure(figsize=(10, 6))
-plt.scatter(customer['Longitude'], customer['Latitude'], c=labels, cmap='viridis', marker='o')
-
-# Add cluster centers
-centers = kmeans.cluster_centers_
-plt.scatter(centers[:, 1], centers[:, 0], c='red', marker='x')
-
-# Add labels and title
-plt.title('Customer Clusters')
-plt.xlabel('Longitude')
-plt.ylabel('Latitude')
-plt.grid(True)
-
-# Show the plot
-plt.show()
-
-
-#|%%--%%| <WWABaGetnF|kPtdBso4AJ>
+#|%%--%%| <L62IfRTi9D|kPtdBso4AJ>
 r"""°°°
 Visualize Customer Locations in map
 °°°"""
@@ -360,11 +296,103 @@ map_clusters.save('customer_clusters_map.html')
 
 
 
-#|%%--%%| <5PMVvv9hTf|sQI4H6z57Z>
+#|%%--%%| <5PMVvv9hTf|Ye0EhjOeSw>
+r"""°°°
+## Customer functions for data 
+°°°"""
+#|%%--%%| <Ye0EhjOeSw|i6WMGtIZf0>
+
+
+def get_invoices(customer_id):
+    invoices = order[order[order.columns[0]] == customer_id].groupby(order.columns[1])
+    return invoices
+
+# len(get_invoices(customer_id))
+# len(invoices)
+
+#|%%--%%| <i6WMGtIZf0|RNQ75sf65B>
+
+
+customer_id = customer[customer.columns[0]].iloc[0]
+invoices = get_invoices(customer_id)
+invoice_items_len = 0 
+for invoice in invoices:
+    invoice_items = invoice[1]
+    print(invoice_items)
+    for item in invoice_items.values:
+        qty = item[3]
+        print(qty)
+        item_data = product[item[2] == product[product.columns[0]]]
+        print(item_data.values)
+        x = item_data[[product.columns[8], product.columns[9]]].values[0]
+        print(x[0], int(x[1]))
+
+
+
+
+
+
+#|%%--%%| <RNQ75sf65B|sQI4H6z57Z>
 r"""°°°
 ## DBSCAN with real map
 °°°"""
-#|%%--%%| <sQI4H6z57Z|HdIbjeQ3zQ>
+#|%%--%%| <sQI4H6z57Z|YVQJRPqd5K>
+
+
+#|%%--%%| <YVQJRPqd5K|HdIbjeQ3zQ>
+
+
+def create_row_with_cols_html(key, *args):
+    html = f"""<tr><th>{key}</th>"""
+    for arg in args:
+        html += f"<td>{arg}</td>"
+    html += "</tr>"
+    return html
+
+
+def create_row_html(key, value):
+    return f"""<tr><th>{key}</th><td>{value}</td></tr>"""
+
+
+def create_popup_html(row):
+
+    invoices = get_invoices(row["customerNo"])
+    inv_len = len(invoices)
+    rows = []
+    for invoice in invoices:
+        invoice_id = invoice[0]
+        invoice_items = invoice[1]
+        rows.append(create_row_html("invoice_id", invoice_id))
+        for item in invoice_items.values:
+            item_id = item[2]
+            qty = item[3]
+            rows.append(create_row_html("item_id", item_id))
+            rows.append(create_row_html("qty", qty))
+            item_data = product[item[2] == product[product.columns[0]]]
+            item_l_w = item_data[[product.columns[8], product.columns[9]]].values[0]
+            rows.append(create_row_with_cols_html("Length and Width", *item_l_w))
+
+
+
+
+        # invoice_items = invoice[1]
+
+        # print(invoice_items)
+    rows_t = "".join(rows)
+    html_content = f"""
+    <div style="max-height:200px; overflow-y:auto;">
+        <table style="width:250px">
+            <tr><th>Customer No</th><td>{row['customerNo']}</td></tr>
+            <tr><th>Latitude</th><td>{row['Latitude']}</td></tr>
+            <tr><th>Longitude</th><td>{row['Longitude']}</td></tr>
+            <tr><th>Invoices counts</th><td>{inv_len}</td></tr>
+            {rows_t}
+            
+        </table>
+    </div>
+    """
+    return folium.Popup(html_content, max_width=300)
+
 
 # Convert latitude and longitude to radians for haversine distance calculation
 coords = np.radians(customer[['Latitude', 'Longitude']])
@@ -391,11 +419,33 @@ colors = ['red', 'blue', 'green', 'purple', 'orange', 'darkred', 'lightred', 'be
 for _, row in customer.iterrows():
     cluster_id = row['Cluster']
     color = 'gray' if cluster_id == -1 else colors[cluster_id % len(colors)]  # Use gray for noise points (cluster ID -1)
+
+    # inv_cnts = len(get_invoices(row["customerNo"]))
+    # print(list(inv_cnts)[0])
+
+    # popup=f'Customer No: {row["customerNo"]}, <br/> Cluster: {cluster_id}, <br/> inv: {inv_cnts}',
     folium.Marker(
         location=[row['Latitude'], row['Longitude']],
-        popup=f'Customer No: {row["customerNo"]}, Cluster: {cluster_id}',
+        popup=create_popup_html(row),
         icon=folium.Icon(color=color, icon='info-sign')
     ).add_to(map_clusters)
+
+
+# Add Esri World Imagery basemap
+esri_tiles = folium.TileLayer(
+    tiles='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    attr='Esri',
+    name='Esri World Imagery',
+    overlay=True,
+    control=True
+)
+
+esri_tiles.add_to(map_clusters)
+
+# Add Google Maps tile layer (optional; this uses a plugin and does not need an API key)
+folium.TileLayer('https://mt1.google.com/vt/lyrs=r&x={x}&y={y}&z={z}', 
+                 attr='Google', name='Google Maps', overlay=True).add_to(map_clusters)
+
 
 # Add layer control
 folium.LayerControl().add_to(map_clusters)
@@ -403,16 +453,20 @@ folium.LayerControl().add_to(map_clusters)
 # Save the map to an HTML file
 map_clusters.save('customer_clusters_map_km.html')
 
-#|%%--%%| <HdIbjeQ3zQ|0Ge4TF6mfo>
+#|%%--%%| <HdIbjeQ3zQ|5u8e3bjDHw>
+
+
+
+#|%%--%%| <5u8e3bjDHw|ZZd8mcRs4q>
+r"""°°°
+## merge data
+°°°"""
+#|%%--%%| <ZZd8mcRs4q|0Ge4TF6mfo>
 
 customer_orders = customer.merge(order, how="inner",  left_on=customer.columns[0], right_on=order.columns[0])
 customer_orders.drop(order.columns[0], axis=1, inplace=True)
 
-#|%%--%%| <0Ge4TF6mfo|8PriratQ1j>
-
-# customer_orders.columns[4]
-
-#|%%--%%| <8PriratQ1j|6InNtycW8y>
+#|%%--%%| <0Ge4TF6mfo|6InNtycW8y>
 
 customer_orders.merge(
         product, how="inner",
@@ -420,34 +474,5 @@ customer_orders.merge(
         right_on=product.columns[0]
         )
 
-
-
 #|%%--%%| <6InNtycW8y|u5xlp5o3Yo>
-
-customer_id = customer[customer.columns[0]].iloc[3]
-invoices = order[order[order.columns[0]] == customer_id].groupby(order.columns[1])
-for invoice in invoices:
-    # print(invoice[0], invoice[1])
-    invoice_value = invoice[1]
-    print(invoice_value)
-
-
-    invoice_items = invoice_value[invoice_value.columns[2]]
-    print(invoice_items)
-    # print(invoice_items)
-    for item in invoice_items:
-        # print(item)
-        _product = product[item == product[product.columns[0]]])
-
-        
-
-
-    
-
-#|%%--%%| <u5xlp5o3Yo|GdbVdA4xus>
-
-
-#|%%--%%| <GdbVdA4xus|RNQ75sf65B>
-
-
 
