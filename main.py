@@ -171,81 +171,86 @@ with sqlite3.connect("database.db") as conn:
 r"""°°°
 ### Visualize Customer Locations in grid
 °°°"""
-target_customer = (21.501795, 39.24419833)
-distances = []
 
-for lat, lon in zip(customer['Latitude'], customer['Longitude']):
-    distance = geodesic(target_customer, (lat, lon)).kilometers
-    distances.append(distance)
+#|%%--%%| <L62IfRTi9D|2w0UmeNkdd>
+# target_customer = (21.501795, 39.24419833)
+# distances = []
 
-# Get the index of the nearest neighbor (excluding the customer itself)
-nearest_index = distances.index(sorted(distances)[1])  # [1] to skip the zero distance to itself
-nearest_customer_no = customer['customerNo'][nearest_index]
+# for lat, lon in zip(customer['Latitude'], customer['Longitude']):
+#     distance = geodesic(target_customer, (lat, lon)).kilometers
+#     distances.append(distance)
 
-print(f'The nearest customer to 102215 is: {nearest_customer_no}')
+# # Get the index of the nearest neighbor (excluding the customer itself)
+# nearest_index = distances.index(sorted(distances)[1])  # [1] to skip the zero distance to itself
+# nearest_customer_no = customer['customerNo'][nearest_index]
 
-#|%%--%%| <L62IfRTi9D|kPtdBso4AJ>
+# print(f'The nearest customer to 102215 is: {nearest_customer_no}')
+
+
+
+
+#|%%--%%| <2w0UmeNkdd|kPtdBso4AJ>
 r"""°°°
 Visualize Customer Locations in map
 °°°"""
 #|%%--%%| <kPtdBso4AJ|mutcxhmeUa>
 
 
-# Create a map centered around the average latitude and longitude
-center_lat = sum(customer['Latitude']) / len(customer['Latitude'])
-center_lon = sum(customer['Longitude']) / len(customer['Longitude'])
-map_customers = folium.Map(location=[center_lat, center_lon], zoom_start=11, tiles='OpenStreetMap')
+# # Create a map centered around the average latitude and longitude
+# center_lat = sum(customer['Latitude']) / len(customer['Latitude'])
+# center_lon = sum(customer['Longitude']) / len(customer['Longitude'])
+# map_customers = folium.Map(location=[center_lat, center_lon], zoom_start=11, tiles='OpenStreetMap')
 
 
 #|%%--%%| <mutcxhmeUa|51Wg2rOl7c>
 
-# Add Esri World Imagery basemap
-esri_tiles = folium.TileLayer(
-    tiles='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-    attr='Esri',
-    name='Esri World Imagery',
-    overlay=True,
-    control=True
-)
+# # Add Esri World Imagery basemap
+# esri_tiles = folium.TileLayer(
+#     tiles='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+#     attr='Esri',
+#     name='Esri World Imagery',
+#     overlay=True,
+#     control=True
+# )
 
-esri_tiles.add_to(map_customers)
+# esri_tiles.add_to(map_customers)
 
-# Add Google Maps tile layer (optional; this uses a plugin and does not need an API key)
-folium.TileLayer('https://mt1.google.com/vt/lyrs=r&x={x}&y={y}&z={z}', 
-                 attr='Google', name='Google Maps', overlay=True).add_to(map_customers)
+# # Add Google Maps tile layer (optional; this uses a plugin and does not need an API key)
+# folium.TileLayer('https://mt1.google.com/vt/lyrs=r&x={x}&y={y}&z={z}', 
+#                  attr='Google', name='Google Maps', overlay=True).add_to(map_customers)
 
-# Add layer control
+# # Add layer control
+# # folium.LayerControl().add_to(map_customers)
+
+# # Add customer markers to the map
+# for lat, lon, cust_no in zip(customer['Latitude'], customer['Longitude'], customer['customerNo']):
+#     folium.Marker(
+#         location=[lat, lon],
+#         popup=f'Customer No: {cust_no}',
+#         icon=folium.Icon(color='blue', icon='info-sign')
+#     ).add_to(map_customers)
+
+# # Add layer control
 # folium.LayerControl().add_to(map_customers)
 
-# Add customer markers to the map
-for lat, lon, cust_no in zip(customer['Latitude'], customer['Longitude'], customer['customerNo']):
-    folium.Marker(
-        location=[lat, lon],
-        popup=f'Customer No: {cust_no}',
-        icon=folium.Icon(color='blue', icon='info-sign')
-    ).add_to(map_customers)
-
-# Add layer control
-folium.LayerControl().add_to(map_customers)
-
-# Save the map to an HTML file
-map_customers.save('esri_google_maps_OpenStreetMap_customers.html')
+# # Save the map to an HTML file
+# map_customers.save('esri_google_maps_OpenStreetMap_customers.html')
 
 #|%%--%%| <51Wg2rOl7c|SElS4EJ4rP>
 
-# Authenticate with ArcGIS Online (requires an account)
-gis = GIS("home")
+# # Authenticate with ArcGIS Online (requires an account)
+# gis = GIS("home")
 
-# Create a map centered around the average latitude and longitude
-map_view = gis.map(location=[center_lat, center_lon], zoomlevel=11)
+# # Create a map centered around the average latitude and longitude
+# map_view = gis.map(location=[center_lat, center_lon], zoomlevel=11)
 
-# Add customer locations as graphics
-for lat, lon, cust_no in zip(customer_data['Latitude'], customer_data['Longitude'], customer_data['customerNo']):
-    point = Point({"x": lon, "y": lat})
-    map_view.draw(point, popup={"title": f"Customer No: {cust_no}"})
+# # Add customer locations as graphics
+# for lat, lon, cust_no in zip(customer_data['Latitude'], customer_data['Longitude'], customer_data['customerNo']):
+#     point = Point({"x": lon, "y": lat})
+#     map_view.draw(point, popup={"title": f"Customer No: {cust_no}"})
 
-# Display the map
-map_view
+# # Display the map
+# map_view
 
 #|%%--%%| <SElS4EJ4rP|Ly60dAzsad>
 r"""°°°
@@ -254,45 +259,45 @@ r"""°°°
 #|%%--%%| <Ly60dAzsad|5PMVvv9hTf>
 
 
-# Extract latitude and longitude
-coordinates = customer[['Latitude', 'Longitude']]
+# # Extract latitude and longitude
+# coordinates = customer[['Latitude', 'Longitude']]
 
-# Perform K-Means clustering
-num_clusters = 10  # You can adjust the number of clusters
-kmeans = KMeans(n_clusters=num_clusters, random_state=42)
-customer['Cluster'] = kmeans.fit_predict(coordinates)
+# # Perform K-Means clustering
+# num_clusters = 10  # You can adjust the number of clusters
+# kmeans = KMeans(n_clusters=num_clusters, random_state=42)
+# customer['Cluster'] = kmeans.fit_predict(coordinates)
 
-# Create a folium map centered around the average location
-center_lat = customer['Latitude'].mean()
-center_lon = customer['Longitude'].mean()
-map_clusters = folium.Map(location=[center_lat, center_lon], zoom_start=11, tiles=None)
+# # Create a folium map centered around the average location
+# center_lat = customer['Latitude'].mean()
+# center_lon = customer['Longitude'].mean()
+# map_clusters = folium.Map(location=[center_lat, center_lon], zoom_start=11, tiles=None)
 
-# Add Esri World Imagery basemap
-esri_tiles = folium.TileLayer(
-    tiles='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-    attr='Esri',
-    name='Esri World Imagery',
-    overlay=True,
-    control=True
-)
-esri_tiles.add_to(map_clusters)
+# # Add Esri World Imagery basemap
+# esri_tiles = folium.TileLayer(
+#     tiles='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+#     attr='Esri',
+#     name='Esri World Imagery',
+#     overlay=True,
+#     control=True
+# )
+# esri_tiles.add_to(map_clusters)
 
-# Define colors for clusters
-colors = ['red', 'blue', 'green', 'purple', 'orange', 'darkred', 'lightred', 'beige', 'darkblue', 'darkgreen', 'cadetblue', 'darkpurple', 'pink', 'lightblue', 'lightgreen']
+# # Define colors for clusters
+# colors = ['red', 'blue', 'green', 'purple', 'orange', 'darkred', 'lightred', 'beige', 'darkblue', 'darkgreen', 'cadetblue', 'darkpurple', 'pink', 'lightblue', 'lightgreen']
 
-# Add customer markers to the map, color-coded by cluster
-for _, row in customer.iterrows():
-    folium.Marker(
-        location=[row['Latitude'], row['Longitude']],
-        popup=f'Customer No: {row["customerNo"]}, Cluster: {row["Cluster"]}',
-        icon=folium.Icon(color=colors[row['Cluster'] % len(colors)], icon='info-sign')
-    ).add_to(map_clusters)
+# # Add customer markers to the map, color-coded by cluster
+# for _, row in customer.iterrows():
+#     folium.Marker(
+#         location=[row['Latitude'], row['Longitude']],
+#         popup=f'Customer No: {row["customerNo"]}, Cluster: {row["Cluster"]}',
+#         icon=folium.Icon(color=colors[row['Cluster'] % len(colors)], icon='info-sign')
+#     ).add_to(map_clusters)
 
-# Add layer control
-folium.LayerControl().add_to(map_clusters)
+# # Add layer control
+# folium.LayerControl().add_to(map_clusters)
 
-# Save the map to an HTML file
-map_clusters.save('customer_clusters_map.html')
+# # Save the map to an HTML file
+# map_clusters.save('customer_clusters_map.html')
 
 
 
@@ -457,16 +462,16 @@ r"""°°°
 °°°"""
 #|%%--%%| <5u8e3bjDHw|0Ge4TF6mfo>
 
-customer_orders = customer.merge(order, how="inner",  left_on=customer.columns[0], right_on=order.columns[0])
-customer_orders.drop(order.columns[0], axis=1, inplace=True)
+# customer_orders = customer.merge(order, how="inner",  left_on=customer.columns[0], right_on=order.columns[0])
+# customer_orders.drop(order.columns[0], axis=1, inplace=True)
 
 #|%%--%%| <0Ge4TF6mfo|6InNtycW8y>
 
-customer_orders.merge(
-        product, how="inner",
-        left_on=customer_orders.columns[4],
-        right_on=product.columns[0]
-        )
+# customer_orders.merge(
+#         product, how="inner",
+#         left_on=customer_orders.columns[4],
+#         right_on=product.columns[0]
+#         )
 
 #|%%--%%| <6InNtycW8y|u5xlp5o3Yo>
 
