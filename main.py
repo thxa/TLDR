@@ -104,7 +104,7 @@ converter = lambda c: c.replace(char, ".")
 for i in [1, 2]:
     customer[customer.columns[i]] = customer[customer.columns[i]].apply(converter).apply(float)
 
-for i in [7, 8, 10]:
+for i in [7, 8, 9, 10]:
     product[product.columns[i]] = product[product.columns[i]].apply(converter).apply(float)
 
 
@@ -339,9 +339,6 @@ r"""°°°
 #|%%--%%| <sQI4H6z57Z|YVQJRPqd5K>
 
 
-#|%%--%%| <YVQJRPqd5K|HdIbjeQ3zQ>
-
-
 def create_row_with_cols_html(key, *args):
     html = f"""<tr><th>{key}</th>"""
     for arg in args:
@@ -363,21 +360,22 @@ def create_popup_html(row):
         invoice_id = invoice[0]
         invoice_items = invoice[1]
         rows.append(create_row_html("invoice_id", invoice_id))
+        invoice_area = 0
         for item in invoice_items.values:
-            item_id = item[2]
-            qty = item[3]
-            rows.append(create_row_html("item_id", item_id))
-            rows.append(create_row_html("qty", qty))
+            # item_id = item[2]
+            # qty = item[3]
+            # rows.append(create_row_html("item_id", item_id))
+            # rows.append(create_row_html("qty", qty))
             item_data = product[item[2] == product[product.columns[0]]]
             item_l_w = item_data[[product.columns[8], product.columns[9]]].values[0]
-            rows.append(create_row_with_cols_html("Length and Width", *item_l_w))
+            # rows.append(create_row_with_cols_html("Length and Width", *item_l_w))
+
+            invoice_area += item_l_w[0] * item_l_w[1]
+
+        rows.append(create_row_html("Invoice area", invoice_area))
 
 
 
-
-        # invoice_items = invoice[1]
-
-        # print(invoice_items)
     rows_t = "".join(rows)
     html_content = f"""
     <div style="max-height:200px; overflow-y:auto;">
@@ -453,15 +451,11 @@ folium.LayerControl().add_to(map_clusters)
 # Save the map to an HTML file
 map_clusters.save('customer_clusters_map_km.html')
 
-#|%%--%%| <HdIbjeQ3zQ|5u8e3bjDHw>
-
-
-
-#|%%--%%| <5u8e3bjDHw|ZZd8mcRs4q>
+#|%%--%%| <YVQJRPqd5K|5u8e3bjDHw>
 r"""°°°
 ## merge data
 °°°"""
-#|%%--%%| <ZZd8mcRs4q|0Ge4TF6mfo>
+#|%%--%%| <5u8e3bjDHw|0Ge4TF6mfo>
 
 customer_orders = customer.merge(order, how="inner",  left_on=customer.columns[0], right_on=order.columns[0])
 customer_orders.drop(order.columns[0], axis=1, inplace=True)
