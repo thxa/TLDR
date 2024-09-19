@@ -1,0 +1,73 @@
+% % Header and Footer Styling
+% Some settings:
+\pagestyle{empty} % no header or footer
+\pagestyle{fancy}
+\fancyhf{} % sets both header and footer to nothing
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[CO,RE]{\color{gray}\textit{\small \ourteam \ - Page \thepage{} of \pageref*{LastPage}}}
+
+
+
+% \titleformat{\section}{
+%     % make the font size of the section title large and color it with the primary color
+%     \Large\color{primaryColor}
+% }{
+% }{
+% }{
+%     % print bold title, give 0.15 cm space and draw a line of 0.8 pt thickness
+%     % from the end of the title to the end of the body
+%     \textbf{#1}\hspace{0.15cm}\titlerule[0.8pt]\hspace{-0.1cm}
+% }[] % section title formatting
+
+% \titlespacing{\section}{
+%     % left space:
+%     0pt
+% }{
+%     % top space:
+%     0.3 cm
+% }{
+%     % bottom space:
+%     0.2 cm
+% } % section title spacing
+
+% \titleformat{\subsection}{
+%     % \color{primaryColor}
+% }{
+% }{
+% }{
+%     #1 \hspace{0.15cm}\hspace{-0.1cm}
+% }[] % section title formatting
+
+% \newenvironment{header}{
+%     \setlength{\topsep}{0pt}\par\kern\topsep\centering\color{primaryColor}\linespread{1.5}
+% }{
+%     \par\kern\topsep
+% } % new environment for the header
+
+\newcommand{\placelastupdatedtext}{% \placetextbox{<horizontal pos>}{<vertical pos>}{<stuff>}
+    \AddToShipoutPictureFG*{% Add <stuff> to current page foreground
+        \put(
+        \LenToUnit{\paperwidth-2 cm-0.2 cm+0.05cm},
+        \LenToUnit{\paperheight-1.0 cm}
+        ){\vtop{{\null}\makebox[0pt][c]{
+                    % \small\color{gray}\textit{Last updated in February 2024}\hspace{\widthof{Last updated in February 2024}}
+                    \small\color{gray}\textit{Last updated on \today}\hspace{\widthof{Last updated on \today}}
+        }}}%
+    }%
+}%
+
+% save the original href command in a new command:
+\let\hrefWithoutArrow\href
+% new command for external links:
+\renewcommand{\href}[2]{\hrefWithoutArrow{#1}{\mbox{\ifthenelse{\equal{#2}{}}{ }{#2 }\raisebox{.15ex}{\footnotesize \faExternalLink*}}}}
+
+
+% For TextEntrys (see https://tex.stackexchange.com/a/600/287984):
+% \def\changemargin#1#2{\list{}{\rightmargin#2\leftmargin#1\topsep=0pt\itemsep=0pt\parsep=0pt\parskip=0pt\labelwidth=0pt\itemindent=0pt\labelsep=0pt}\item[]}
+% \let\endchangemargin=\endlist 
+
+% Ensure that generate pdf is machine readable/ATS parsable
+\pdfgentounicode=1
+% \pagestyle{customFooterStyle}
+
+

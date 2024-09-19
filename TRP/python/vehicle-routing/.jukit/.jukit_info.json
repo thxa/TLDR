@@ -1,0 +1,1 @@
+{"cmd": "import sys\nimport os\n# sys.path.append(f\"{os.getcwd()}/.venv/lib/python3.12/site-packages/\")\n# sys.path.append(f\"{os.getcwd()}/\")\nfrom src.vehicle_routing.demo_data import DemoData, generate_demo_data\nprint(sys.path)\n", "cmd_opts": " --cell_id=NONE -s", "import_complete": 1, "terminal": "nvimterm"}

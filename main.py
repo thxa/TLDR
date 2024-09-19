@@ -108,16 +108,16 @@ for i in [7, 8, 9, 10]:
     product[product.columns[i]] = product[product.columns[i]].apply(converter).apply(float)
 
 
-
+order['SalesQty'] = order['SalesQty'].apply(float)
 # for i in [7, 8, 10]:
 #     product[product.columns[i]] = product[product.columns[i]].apply(converter).apply(float)
 
 
 #|%%--%%| <ixu2u4NKf9|Vo3wspte9e>
 
-# print(order.head(5))
-# print(product.head(5))
-# print(customer.head(5))
+print(order.head(5))
+print(product.head(5))
+print(customer.head(5))
 print(truck.head(5))
 
 #|%%--%%| <Vo3wspte9e|zYK7cQ7lZ2>
@@ -126,24 +126,25 @@ r"""°°°
 °°°"""
 #|%%--%%| <zYK7cQ7lZ2|ssUu4wsfSr>
 
-def create_sqlite_database(filename):
-    """ create a database connection to an SQLite database """
-    conn = None
-    try:
-        conn = sqlite3.connect(filename)
-        print(sqlite3.sqlite_version)
-    except sqlite3.Error as e:
-        print(e)
-    finally:
-        if conn:
-            conn.close()
+
+# def create_sqlite_database(filename):
+#     """ create a database connection to an SQLite database """
+#     conn = None
+#     try:
+#         conn = sqlite3.connect(filename)
+#         print(sqlite3.sqlite_version)
+#     except sqlite3.Error as e:
+#         print(e)
+#     finally:
+#         if conn:
+#             conn.close()
 
 
-create_sqlite_database("database.db")
+# create_sqlite_database("database.db")
 
 #|%%--%%| <ssUu4wsfSr|yh2wtr04PJ>
 r"""°°°
-Convert Dataframes to SQLite
+### Convert Dataframes to SQLite
 docs: 
     - https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_sql.html
     - https://www.sqlitetutorial.net/sqlite-python/creating-database/
@@ -156,15 +157,15 @@ docs:
 
 #|%%--%%| <spFEWUwlny|86FIHxXaeQ>
 
-with sqlite3.connect("database.db") as conn:
-    customer.to_sql('customer', con=conn, index=False)
-    order.to_sql('order', con=conn, index=False)
-    product.to_sql('product', con=conn, index=False)
-    truck.to_sql('truck', con=conn, index=False)
+# with sqlite3.connect("database.db") as conn:
+#     customer.to_sql('customer', con=conn, index=False)
+#     order.to_sql('order', con=conn, index=False)
+#     product.to_sql('product', con=conn, index=False)
+#     truck.to_sql('truck', con=conn, index=False)
 
 #|%%--%%| <86FIHxXaeQ|DBygB4kVmR>
-with sqlite3.connect("database.db") as conn:
-    print(conn.execute("SELECT * FROM product").fetchall())
+# with sqlite3.connect("database.db") as conn:
+#     print(conn.execute("SELECT * FROM product").fetchall())
 
 
 #|%%--%%| <DBygB4kVmR|L62IfRTi9D>
@@ -343,6 +344,67 @@ r"""°°°
 °°°"""
 #|%%--%%| <sQI4H6z57Z|YVQJRPqd5K>
 
+# Include necessary CSS for the hover-based dropdown
+css = """
+<style>
+    .invoice-container {
+        position: relative;
+        display: inline-block;
+    }
+    .invoice-button {
+        padding: 5px 10px;
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        cursor: pointer;
+    }
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+    .dropdown-menu ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+    .dropdown-menu li {
+        padding: 8px 12px;
+    }
+    .invoice-container:hover .dropdown-menu {
+        display: block;
+    }
+</style>
+"""
+
+
+
+def create_row_html_with_dropdown(key, invoice_id, invoice_items):
+    # Create list items for each product in the invoice
+    items_html = "".join(
+        # f"<li>{item[2]}: {product[product.columns[8]]} x {product[product.columns[9]]}</li>"
+        f"<li> : Hello world</li>"
+        for item in invoice_items.values
+    )
+    
+    # Construct the dropdown container with hover functionality
+    dropdown_html = f"""
+    <div class="invoice-container">
+        <div class="invoice-button">{invoice_id}</div>
+        <div class="dropdown-menu">
+            <ul>
+                {items_html}
+            </ul>
+        </div>
+    </div>
+    """
+    
+
+    
+    return f"""<tr><th>{key}</th><td>{dropdown_html}</td></tr>"""
+
 
 def create_row_with_cols_html(key, *args):
     html = f"""<tr><th>{key}</th>"""
@@ -361,11 +423,16 @@ def create_popup_html(row):
     invoices = get_invoices(row["customerNo"])
     inv_len = len(invoices)
     rows = []
+
     for invoice in invoices:
         invoice_id = invoice[0]
         invoice_items = invoice[1]
         rows.append(create_row_html("invoice_id", invoice_id))
+
+        # print(create_row_html_with_dropdown(0, invoice_id, invoice_items))
+        # rows.append(create_row_html_with_dropdown(0, invoice_id, invoice_items))
         invoice_area = 0
+        fit_on_truck = 0
         for item in invoice_items.values:
             # item_id = item[2]
             # qty = item[3]
@@ -376,8 +443,11 @@ def create_popup_html(row):
             # rows.append(create_row_with_cols_html("Length and Width", *item_l_w))
 
             invoice_area += item_l_w[0] * item_l_w[1]
+            fit_on_truck += 12000 / (item_l_w[0] * item_l_w[1])
 
         rows.append(create_row_html("Invoice area", invoice_area))
+        rows.append(create_row_html("Invoice items fit in truck # after loop", 12000/invoice_area))
+        rows.append(create_row_html("Invoice items fit in truck # in loop", fit_on_truck))
 
 
 
@@ -473,5 +543,401 @@ r"""°°°
 #         right_on=product.columns[0]
 #         )
 
-#|%%--%%| <6InNtycW8y|u5xlp5o3Yo>
+#|%%--%%| <6InNtycW8y|adXK8w89SD>
+r"""°°°
+## Vehicle Routing Problem (VRP)
+°°°"""
+#|%%--%%| <adXK8w89SD|rfyXJb6oQP>
+
+
+from ortools.constraint_solver import routing_enums_pb2
+from ortools.constraint_solver import pywrapcp
+import numpy as np
+
+# Sample data: distances between locations (in km) using Euclidean distance
+locations = [
+    (21.501795, 39.24419833),  # Depot
+    (21.74588167, 39.19407),
+    (21.58945167, 39.21912167),
+    (21.45495833, 39.20741167),
+    (21.7710044, 39.2204109),
+    (21.5414813, 39.2886656)
+]
+depot_index = 0  # Depot is the starting location
+
+# Vehicle properties
+num_vehicles = 2
+vehicle_capacity = 15  # Example capacity (units of goods)
+
+# Customer demands (including depot, which has 0 demand)
+demands = [0, 3, 4, 5, 2, 4]
+
+# Calculate Euclidean distance between locations (distance matrix)
+def compute_euclidean_distance_matrix(locations):
+    distances = np.zeros((len(locations), len(locations)))
+    for i, loc1 in enumerate(locations):
+        for j, loc2 in enumerate(locations):
+            if i != j:
+                distances[i][j] = np.sqrt((loc1[0] - loc2[0]) ** 2 + (loc1[1] - loc2[1]) ** 2)
+    return distances
+
+distance_matrix = compute_euclidean_distance_matrix(locations)
+
+# Create the routing model
+manager = pywrapcp.RoutingIndexManager(len(distance_matrix), num_vehicles, depot_index)
+routing = pywrapcp.RoutingModel(manager)
+
+# Create and register a transit callback (distance)
+def distance_callback(from_index, to_index):
+    from_node = manager.IndexToNode(from_index)
+    to_node = manager.IndexToNode(to_index)
+    return distance_matrix[from_node][to_node]
+
+transit_callback_index = routing.RegisterTransitCallback(distance_callback)
+routing.SetArcCostEvaluatorOfAllVehicles(transit_callback_index)
+
+# Add capacity constraint
+def demand_callback(from_index):
+    from_node = manager.IndexToNode(from_index)
+    return demands[from_node]
+
+demand_callback_index = routing.RegisterUnaryTransitCallback(demand_callback)
+routing.AddDimensionWithVehicleCapacity(
+    demand_callback_index,  # demand callback
+    0,  # null capacity slack
+    [vehicle_capacity] * num_vehicles,  # vehicle maximum capacities
+    True,  # start cumul to zero
+    'Capacity'
+)
+
+# Set search parameters
+search_parameters = pywrapcp.DefaultRoutingSearchParameters()
+search_parameters.first_solution_strategy = (
+    routing_enums_pb2.FirstSolutionStrategy.PATH_CHEAPEST_ARC)
+
+# Solve the problem
+solution = routing.SolveWithParameters(search_parameters)
+
+# Print the solution
+if solution:
+    for vehicle_id in range(num_vehicles):
+        index = routing.Start(vehicle_id)
+        route_distance = 0
+        route_load = 0
+        route = []
+        while not routing.IsEnd(index):
+            node_index = manager.IndexToNode(index)
+            route_load += demands[node_index]
+            route.append(node_index)
+            previous_index = index
+            index = solution.Value(routing.NextVar(index))
+            route_distance += routing.GetArcCostForVehicle(previous_index, index, vehicle_id)
+        route.append(manager.IndexToNode(index))
+        print(f"Route for vehicle {vehicle_id}: {route}")
+        print(f"Distance of the route: {route_distance}")
+        print(f"Load of the route: {route_load}")
+else:
+    print('No solution found!')
+
+#|%%--%%| <rfyXJb6oQP|UHZSn3DdRN>
+
+
+# Aggregate demand for each customer
+customer_demand = order.groupby('Customer #')['SalesQty'].sum().reset_index()
+customer_demand.columns = ['customerNo', 'demand']
+print(customer_demand.head())
+
+#|%%--%%| <UHZSn3DdRN|XVJBr6P2Qk>
+
+
+# Merge customer demand with geolocation data
+customer_data = pd.merge(customer, customer_demand, on='customerNo', how='inner')
+print(customer_data.head())
+
+#|%%--%%| <XVJBr6P2Qk|u5xlp5o3Yo>
+
+from ortools.constraint_solver import routing_enums_pb2
+from ortools.constraint_solver import pywrapcp
+import numpy as np
+
+# Extract customer locations (including a depot)
+depot = (21.501795, 39.244198)  # Replace with actual depot location
+customer_locations = customer_data[['Latitude', 'Longitude']].values.tolist()
+locations = [depot] + customer_locations  # Depot + all customer locations
+
+# Vehicle properties
+num_vehicles = len(truck)  # Number of vehicles
+vehicle_capacities = truck['Capacity (Pallets)'].astype(int).tolist()
+
+# Customer demands (including depot with 0 demand)
+demands = [0] + customer_data['demand'].tolist()
+
+# Calculate Euclidean distance between locations (distance matrix)
+def compute_euclidean_distance_matrix(locations):
+    distances = np.zeros((len(locations), len(locations)))
+    for i, loc1 in enumerate(locations):
+        for j, loc2 in enumerate(locations):
+            if i != j:
+                distances[i][j] = np.sqrt((loc1[0] - loc2[0]) ** 2 + (loc1[1] - loc2[1]) ** 2)
+    return distances
+
+
+distance_matrix = compute_euclidean_distance_matrix(locations)
+
+# Create the routing model
+manager = pywrapcp.RoutingIndexManager(len(distance_matrix), num_vehicles, 0)  # Depot index is 0
+routing = pywrapcp.RoutingModel(manager)
+
+
+# Create and register a transit callback (distance)
+def distance_callback(from_index, to_index):
+    from_node = manager.IndexToNode(from_index)
+    to_node = manager.IndexToNode(to_index)
+    return distance_matrix[from_node][to_node]
+
+
+transit_callback_index = routing.RegisterTransitCallback(distance_callback)
+routing.SetArcCostEvaluatorOfAllVehicles(transit_callback_index)
+
+
+# Add capacity constraint
+def demand_callback(from_index):
+    from_node = manager.IndexToNode(from_index)
+    return demands[from_node]
+
+
+demand_callback_index = routing.RegisterUnaryTransitCallback(demand_callback)
+routing.AddDimensionWithVehicleCapacity(
+    demand_callback_index,  # demand callback
+    0,  # null capacity slack
+    vehicle_capacities,  # vehicle capacities
+    True,  # start cumul to zero
+    'Capacity'
+)
+
+# Set search parameters
+search_parameters = pywrapcp.DefaultRoutingSearchParameters()
+search_parameters.first_solution_strategy = routing_enums_pb2.FirstSolutionStrategy.PATH_CHEAPEST_ARC
+
+# Solve the problem
+solution = routing.SolveWithParameters(search_parameters)
+
+# Print the solution
+if solution:
+    for vehicle_id in range(num_vehicles):
+        index = routing.Start(vehicle_id)
+        route_distance = 0
+        route_load = 0
+        route = []
+        while not routing.IsEnd(index):
+            node_index = manager.IndexToNode(index)
+            route_load += demands[node_index]
+            route.append(node_index)
+            previous_index = index
+            index = solution.Value(routing.NextVar(index))
+            route_distance += routing.GetArcCostForVehicle(previous_index, index, vehicle_id)
+        route.append(manager.IndexToNode(index))
+        print(f"Route for vehicle {vehicle_id}: {route}")
+        print(f"Distance of the route: {route_distance}")
+        print(f"Load of the route: {route_load}")
+else:
+    print('No solution found!')
+#|%%--%%| <u5xlp5o3Yo|KIjq3S4sOL>
+
+
+
+import folium
+from ortools.constraint_solver import routing_enums_pb2
+from ortools.constraint_solver import pywrapcp
+import pandas as pd
+import numpy as np
+
+# Assuming `customer_data`, `truck`, and other variables are defined as in the previous example
+
+# Depot location (latitude, longitude)
+depot = (21.501795, 39.244198)  # Replace with actual depot coordinates
+locations = [depot] + customer[['Latitude', 'Longitude']].values.tolist()
+
+# Calculate Euclidean distance between locations (distance matrix)
+def compute_euclidean_distance_matrix(locations):
+    distances = np.zeros((len(locations), len(locations)))
+    for i, loc1 in enumerate(locations):
+        for j, loc2 in enumerate(locations):
+            if i != j:
+                distances[i][j] = np.sqrt((loc1[0] - loc2[0]) ** 2 + (loc1[1] - loc2[1]) ** 2)
+    return distances
+
+distance_matrix = compute_euclidean_distance_matrix(locations)
+
+# Vehicle properties
+num_vehicles = len(truck)
+vehicle_capacities = truck['Capacity (Pallets)'].astype(int).tolist()
+demands = [0] + customer['demand'].tolist()
+
+# Create the routing model
+manager = pywrapcp.RoutingIndexManager(len(distance_matrix), num_vehicles, 0)
+routing = pywrapcp.RoutingModel(manager)
+
+# Define the distance callback
+def distance_callback(from_index, to_index):
+    from_node = manager.IndexToNode(from_index)
+    to_node = manager.IndexToNode(to_index)
+    return distance_matrix[from_node][to_node]
+
+transit_callback_index = routing.RegisterTransitCallback(distance_callback)
+routing.SetArcCostEvaluatorOfAllVehicles(transit_callback_index)
+
+# Add capacity constraint
+def demand_callback(from_index):
+    from_node = manager.IndexToNode(from_index)
+    return demands[from_node]
+
+demand_callback_index = routing.RegisterUnaryTransitCallback(demand_callback)
+routing.AddDimensionWithVehicleCapacity(
+    demand_callback_index,
+    0,
+    vehicle_capacities,
+    True,
+    'Capacity'
+)
+
+# Set search parameters
+search_parameters = pywrapcp.DefaultRoutingSearchParameters()
+search_parameters.first_solution_strategy = routing_enums_pb2.FirstSolutionStrategy.PATH_CHEAPEST_ARC
+
+# Solve the problem
+solution = routing.SolveWithParameters(search_parameters)
+
+# Initialize a map centered at the depot
+m = folium.Map(location=depot, zoom_start=12)
+
+# Add depot marker
+folium.Marker(depot, popup='Depot', icon=folium.Icon(color='blue', icon='home')).add_to(m)
+
+# Colors for routes
+colors = ['red', 'green', 'purple', 'orange', 'blue', 'darkred', 'lightred', 'beige', 'darkblue', 'darkgreen']
+
+# Extract and plot routes
+if solution:
+    for vehicle_id in range(num_vehicles):
+        index = routing.Start(vehicle_id)
+        route = []
+        while not routing.IsEnd(index):
+            node_index = manager.IndexToNode(index)
+            route.append(node_index)
+            index = solution.Value(routing.NextVar(index))
+        route.append(manager.IndexToNode(index))  # Add the depot at the end
+
+        # Draw the route on the map
+        route_coords = [locations[i] for i in route]
+        folium.PolyLine(route_coords, color=colors[vehicle_id % len(colors)], weight=2.5, opacity=1).add_to(m)
+
+        # Add markers for each customer in the route
+        for i in route[1:]:  # Skip the first index as it's the depot
+            folium.Marker(
+                location=locations[i],
+                popup=f'Customer {customer_data.iloc[i-1]["customerNo"]}, Demand: {demands[i]}',
+                icon=folium.Icon(color='green', icon='info-sign')
+            ).add_to(m)
+else:
+    print('No solution found!')
+
+# Save the map to an HTML file and display it
+m.save('vrp_solution_map.html')
+#|%%--%%| <KIjq3S4sOL|EwohGJPppP>
+
+
+import folium
+import openrouteservice
+import pandas as pd
+
+# Load your data
+customer_data = customer
+truck_data = truck
+
+# Your ORS API key (replace 'YOUR_API_KEY' with your real OpenRouteService API key)
+client = openrouteservice.Client(key='5b3ce3597851110001cf6248cb8b884a54184dde970cac3e7a838150')
+
+# Depot location (latitude, longitude)
+depot = (21.501795, 39.244198)
+
+# Get customer locations
+customer_locations = customer_data[['Latitude', 'Longitude']].values.tolist()
+
+# Initialize a map centered at the depot
+m = folium.Map(location=depot, zoom_start=12)
+
+# Add depot marker
+folium.Marker(depot, popup='Depot', icon=folium.Icon(color='blue', icon='home')).add_to(m)
+
+# Add markers for each customer
+for i, (lat, lon) in enumerate(customer_locations):
+    folium.Marker(
+        location=(lat, lon),
+        popup=f'Customer {customer_data.iloc[i]["customerNo"]}',
+        icon=folium.Icon(color='green', icon='info-sign')
+    ).add_to(m)
+
+# # Construct a route with ORS between the depot and each customer
+# for _customer in customer_locations[:5]:
+#     coords = [depot, _customer]  # Coordinates for the route: from depot to customer
+
+#     # Make a request to the ORS API for directions
+#     try:
+#         route = client.directions(
+#             coordinates=coords,
+#             profile='driving-car',
+#             format='geojson'
+#         )
+#         # Extract the geometry of the route
+#         folium.GeoJson(route['routes'][0]['geometry'], name='route').add_to(m)
+#     except Exception as e:
+#         print(f"An error occurred while fetching the route: {e}")
+
+
+
+# Construct a route with ORS between the depot and each customer
+# for _customer in customer_locations[:5]:
+#     coords = [depot, _customer]  # Coordinates for the route: from depot to customer
+
+#     # Make a request to the ORS API for directions with an increased radius
+#     try:
+#         route = client.directions(
+#             coordinates=coords,
+#             profile='driving-car',
+#             format='geojson',
+#             radiuses=[1000, 1000]  # Increase search radius to 1000 meters for both points
+#         )
+#         # Extract the geometry of the route
+#         folium.GeoJson(route['routes'][0]['geometry'], name='route').add_to(m)
+#     except Exception as e:
+#         print(f"An error occurred while fetching the route: {e}")
+# Construct a route with ORS between the depot and each customer
+for _customer in customer_locations[:]:
+    coords = [depot, _customer]  # Coordinates for the route: from depot to customer
+
+    try:
+        # Request directions from ORS API
+        route = client.directions(
+            coordinates=coords,
+            profile='driving-car',
+            format='geojson',
+            radiuses=[1000, 1000]  # Increase search radius
+        )
+
+        # Check if 'routes' is in the response
+        if 'routes' in route:
+            # Extract the geometry of the route
+            folium.GeoJson(route['routes'][0]['geometry'], name='route').add_to(m)
+        else:
+            print(f"Routing failed for coordinates: {coords}")
+            print(f"Full response from ORS: {route}")
+
+    except Exception as e:
+        print(f"An error occurred while fetching the route: {e}")
+
+
+# Save the map to an HTML file
+m.save('realistic_vrp_map.html')
+# m
 

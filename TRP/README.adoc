@@ -1,0 +1,19 @@
+// https://timefold.ai[timefold.ai]
+
+== Use cases
+
+=== Vehicle Routing
+
+Find the most efficient routes for vehicles to reach visits, taking into account vehicle capacity and time windows when visits are available. Sometimes also called "CVRPTW".
+
+
+* link:python/vehicle-routing/README.adoc[Run python-vehicle-routing] (Python, FastAPI)
+== Legal notice
+
+Timefold Quickstarts was https://timefold.ai/blog/2023/optaplanner-fork/[forked] on 20 April 2023 from OptaPlanner Quickstarts,
+which was entirely Apache-2.0 licensed (a permissive license).
+
+Timefold Quickstarts is a derivative work of OptaPlanner Quickstarts,
+which includes copyrights of the original creator, Red Hat Inc., affiliates and contributors,
+that were all entirely licensed under the Apache-2.0 license.
+Every source file has been modified.
