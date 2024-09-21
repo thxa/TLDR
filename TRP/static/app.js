@@ -507,7 +507,7 @@ function replaceQuickstartTimefoldAutoHeaderFooter() {
             $(`<div class="container-fluid">
         <nav class="navbar sticky-top navbar-expand-lg navbar-dark shadow mb-3">
           <a class="navbar-brand" href="">
-            <img src="" alt="Timefold logo" width="200">
+            <img src="/webjars/timefold/img/logo.png" alt="EcoRoute" width="100" height="50">
           </a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>

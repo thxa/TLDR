@@ -27,6 +27,7 @@ async def demo_data_list():
 async def get_demo_data(dataset_id: str) -> VehicleRoutePlan:
     # demo_data = generate_demo_data(getattr(DemoData, dataset_id))
     return VRP
+    # return generate_demo_data(DemoData.FIRENZE)
 
 
 @app.get("/route-plans/{problem_id}", response_model_exclude_none=True)

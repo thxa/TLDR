@@ -6,7 +6,7 @@ function replaceTimefoldAutoHeaderFooter() {
       $(`<div class="container-fluid">
         <nav class="navbar sticky-top navbar-expand-lg navbar-dark shadow mb-3">
           <a class="navbar-brand" href="/">
-            <img src="" alt="Timefold logo" width="200">
+            <img src="/webjars/timefold/img/logo.png" alt="EcoRoute logo" width="200">
           </a>
         </nav>
       </div>`));

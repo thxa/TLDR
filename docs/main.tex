@@ -35,12 +35,13 @@
 \usepackage[default, type1]{sourcesanspro} % for using source sans 3 font
 \usepackage{ifthen}
 \usepackage{fancyhdr}
-
+\usepackage{graphicx}
+\usepackage{blindtext}
 
 % Team Information
 \newcommand{\ourteam}{}
 
-\title{Optimizing Truck Routing and Delivery Efficiency(TLRK)}
+\title{Optimizing Truck Routing and Delivery Efficiency}
 % \input{config}
 % Begin Document
 \begin{document}
@@ -49,6 +50,8 @@
 \maketitle
 % % Title/Header
 % \vspace{0.3 cm}
+
+\tableofcontents
 
 \section{Executive Summary}
 This idea focuses on improving the delivery process by optimizing truck routes. The company is
@@ -87,6 +90,53 @@ based on their capacity to maximize efficiency.
     \item Full-scale implementation across the logistics network.
     \item Provide training to staff on the new system.
 \end{enumerate}
+
+
+
+
+\section{Diagrams}
+\subsection{Database Diagrams}
+% \blindtext
+
+\begin{figure}[h]
+   \centering
+   \begin{tabular}{@{}c@{\hspace{.5cm}}c@{}}
+       \includegraphics[page=1,width=1\textwidth]{TLDR_old_u.pdf}
+       % \includegraphics[page=2,width=.45\textwidth]{somemultipagepdf} \\[.5cm]
+       % \includegraphics[page=3,width=.45\textwidth]{somemultipagepdf} \\
+   \end{tabular}
+ \caption{Old Database Diagram}
+ \label{fig:Test}
+\end{figure}
+
+% \blindtext
+
+\begin{figure}[h]
+   \centering
+   \begin{tabular}{@{}c@{\hspace{.5cm}}c@{}}
+       \includegraphics[page=1,width=1\textwidth]{TLDR_new_u.pdf} 
+       % \includegraphics[page=2,width=.45\textwidth]{somemultipagepdf} \\[.5cm]
+       % \includegraphics[page=3,width=.45\textwidth]{somemultipagepdf} \\
+   \end{tabular}
+ \caption{New Database Diagram}
+ \label{fig:Test}
+\end{figure}
+\newpage
+\subsection{Activity Diagrams}
+\begin{figure}[h]
+   \centering
+   \begin{tabular}{@{}c@{\hspace{.5cm}}c@{}}
+       \includegraphics[page=1,width=1.1\textwidth]{TLDR_activity.pdf} 
+       % \includegraphics[page=2,width=.45\textwidth]{somemultipagepdf} \\[.5cm]
+       % \includegraphics[page=3,width=.45\textwidth]{somemultipagepdf} \\
+   \end{tabular}
+ \caption{New Database Diagram}
+ \label{fig:Test}
+\end{figure}
+
+
+
+
 
 
 \section{Potential Risks and Mitigation}
