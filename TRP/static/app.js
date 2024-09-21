@@ -57,10 +57,42 @@ const byVisitTimeline = new vis.Timeline(byVisitPanel, byVisitItemData, byVisitG
 $(document).ready(function () {
     replaceQuickstartTimefoldAutoHeaderFooter();
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    //     maxZoom: 19,
+    //     attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+    // }).addTo(map);
+    
+    map.attributionControl.setPrefix('');
+
+    // Add OpenStreetMap layer
+    var osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
     }).addTo(map);
+
+    // Add Google Maps layer
+    var googleLayer = L.tileLayer('https://mt{s}.google.com/vt?x={x}&y={y}&z={z}&s=Ga', {
+        subdomains: '0123',
+        maxZoom: 20,
+        attribution: '&copy; <a href="https://www.google.com/maps">Google</a>',
+    });
+
+    // Add Esri layer
+    var esriLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.esri.com/">Esri</a>',
+    });
+
+    // Base layer control
+    var baseLayers = {
+        "OpenStreetMap": osmLayer,
+        "Google Maps": googleLayer,
+        "Esri": esriLayer
+    };
+
+    // Add layer control to switch between map layers
+    L.control.layers(baseLayers).addTo(map);
+
 
     solveButton.click(solve);
     stopSolvingButton.click(stopSolving);
@@ -474,8 +506,8 @@ function replaceQuickstartTimefoldAutoHeaderFooter() {
         timefoldHeader.append(
             $(`<div class="container-fluid">
         <nav class="navbar sticky-top navbar-expand-lg navbar-dark shadow mb-3">
-          <a class="navbar-brand" href="https://timefold.ai">
-            <img src="/webjars/timefold/img/timefold-logo-horizontal-negative.svg" alt="Timefold logo" width="200">
+          <a class="navbar-brand" href="">
+            <img src="" alt="Timefold logo" width="200">
           </a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -485,9 +517,6 @@ function replaceQuickstartTimefoldAutoHeaderFooter() {
               <li class="nav-item active" id="navUIItem">
                 <button class="nav-link active" id="navUI" data-bs-toggle="pill" data-bs-target="#demo" type="button">Demo UI</button>
               </li>
-              <li class="nav-item" id="navRestItem">
-                <button class="nav-link" id="navRest" data-bs-toggle="pill" data-bs-target="#rest" type="button">Guide</button>
-              </li>
               <li class="nav-item" id="navOpenApiItem">
                 <button class="nav-link" id="navOpenApi" data-bs-toggle="pill" data-bs-target="#openapi" type="button">REST API</button>
               </li>
@@ -495,9 +524,6 @@ function replaceQuickstartTimefoldAutoHeaderFooter() {
           </div>
           <div class="ms-auto">
               <div class="btn-group dropstart">
-                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Data
-                  </button>
                   <div id="testDataButton" class="dropdown-menu" aria-labelledby="dropdownMenuButton"></div>
               </div>
           </div>
@@ -511,13 +537,9 @@ function replaceQuickstartTimefoldAutoHeaderFooter() {
             $(`<footer class="bg-black text-white-50">
                <div class="container">
                  <div class="hstack gap-3 p-4">
-                   <div class="ms-auto"><a class="text-white" href="https://timefold.ai">Timefold</a></div>
+                   <div class="ms-auto"><a class="text-white" href=""></a></div>
                    <div class="vr"></div>
-                   <div><a class="text-white" href="https://timefold.ai/docs">Documentation</a></div>
-                   <div class="vr"></div>
-                   <div><a class="text-white" href="https://github.com/TimefoldAI/timefold-quickstarts">Code</a></div>
-                   <div class="vr"></div>
-                   <div class="me-auto"><a class="text-white" href="https://timefold.ai/product/support/">Support</a></div>
+                   <div class="me-auto"><a class="text-white" href=""></a></div>
                  </div>
                </div>
              </footer>`));

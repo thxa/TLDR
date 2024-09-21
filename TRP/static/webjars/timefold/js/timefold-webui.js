@@ -5,8 +5,8 @@ function replaceTimefoldAutoHeaderFooter() {
     timefoldHeader.append(
       $(`<div class="container-fluid">
         <nav class="navbar sticky-top navbar-expand-lg navbar-dark shadow mb-3">
-          <a class="navbar-brand" href="https://timefold.ai">
-            <img src="/timefold/img/timefold-logo-horizontal-negative.svg" alt="Timefold logo" width="200">
+          <a class="navbar-brand" href="/">
+            <img src="" alt="Timefold logo" width="200">
           </a>
         </nav>
       </div>`));
@@ -17,13 +17,9 @@ function replaceTimefoldAutoHeaderFooter() {
       $(`<footer class="bg-black text-white-50">
            <div class="container">
              <div class="hstack gap-3 p-4">
-               <div class="ms-auto"><a class="text-white" href="https://timefold.ai">Timefold</a></div>
+               <div class="ms-auto"><a class="text-white" href=""></a></div>
                <div class="vr"></div>
-               <div><a class="text-white" href="https://timefold.ai/docs">Documentation</a></div>
-               <div class="vr"></div>
-               <div><a class="text-white" href="https://github.com/TimefoldAI/timefold-quickstarts">Code</a></div>
-               <div class="vr"></div>
-               <div class="me-auto"><a class="text-white" href="https://timefold.ai/product/support/">Support</a></div>
+               <div><a class="text-white" href=""></a></div>
              </div>
            </div>
            <div id="applicationInfo" class="container text-center"></div>

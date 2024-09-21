@@ -77,3 +77,50 @@ $ pytest
 == More information
 
 Visit https://timefold.ai[timefold.ai].
+
+
+
+  <h1>REST API Guide</h1>
+
+    <h2>Vehicle routing with vehicle capacity and time windows - integration via cURL</h2>
+
+    <h3>1. Download demo data</h3>
+    <pre>
+              <button class="btn btn-outline-dark btn-sm float-end"
+                      onclick="copyTextToClipboard('curl1')">Copy</button>
+              <code id="curl1">curl -X GET -H 'Accept:application/json' http://localhost:8080/demo-data/FIRENZE -o sample.json</code>
+    </pre>
+
+    <h3>2. Post the sample data for solving</h3>
+    <p>The POST operation returns a <code>jobId</code> that should be used in subsequent commands.</p>
+    <pre>
+              <button class="btn btn-outline-dark btn-sm float-end"
+                      onclick="copyTextToClipboard('curl2')">Copy</button>
+              <code id="curl2">curl -X POST -H 'Content-Type:application/json' http://localhost:8080/route-plans -d@sample.json</code>
+    </pre>
+
+    <h3>3. Get the current status and score</h3>
+    <pre>
+              <button class="btn btn-outline-dark btn-sm float-end"
+                      onclick="copyTextToClipboard('curl3')">Copy</button>
+              <code id="curl3">curl -X GET -H 'Accept:application/json' http://localhost:8080/route-plans/{jobId}/status</code>
+    </pre>
+
+    <h3>4. Get the complete route plan</h3>
+    <pre>
+              <button class="btn btn-outline-dark btn-sm float-end"
+                      onclick="copyTextToClipboard('curl4')">Copy</button>
+              <code id="curl4">curl -X GET -H 'Accept:application/json' http://localhost:8080/route-plans/{jobId}</code>
+    </pre>
+
+    <h3>5. Terminate solving early</h3>
+    <pre>
+              <button class="btn btn-outline-dark btn-sm float-end"
+                      onclick="copyTextToClipboard('curl5')">Copy</button>
+              <code id="curl5">curl -X DELETE -H 'Accept:application/json' http://localhost:8080/route-plans/{jobId}</code>
+    </pre>
+
+
+
+
+

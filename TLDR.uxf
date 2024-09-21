@@ -1,46 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="15.1">
-  <zoom_level>4</zoom_level>
+  <zoom_level>9</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>316</x>
-      <y>588</y>
-      <w>80</w>
-      <h>40</h>
+      <x>189</x>
+      <y>315</y>
+      <w>180</w>
+      <h>54</h>
     </coordinates>
     <panel_attributes>Customer
 --
 customerNo: long
-Latitude: double
-Longitude: double</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>468</x>
-      <y>684</y>
-      <w>108</w>
-      <h>56</h>
-    </coordinates>
-    <panel_attributes>Truck
---
-Truck ID: 							long
-Truck Name: 						string
-Capacity (Pallets): 				long
-Multiple Trips (# of trips): 	int
-Priority: int 
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>644</x>
-      <y>560</y>
-      <w>120</w>
-      <h>88</h>
+      <x>882</x>
+      <y>387</y>
+      <w>270</w>
+      <h>189</h>
     </coordinates>
     <panel_attributes>Product
 --
@@ -61,27 +42,25 @@ Carton  Height (in cm): double
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>476</x>
-      <y>588</y>
-      <w>108</w>
-      <h>44</h>
+      <x>549</x>
+      <y>315</y>
+      <w>243</w>
+      <h>72</h>
     </coordinates>
     <panel_attributes>Order
 --
 Customer #: long
-Invoice #: long
-Item #: string
-SalesQty: long
+Invoice #: string
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>392</x>
-      <y>600</y>
-      <w>92</w>
-      <h>20</h>
+      <x>360</x>
+      <y>342</y>
+      <w>207</w>
+      <h>45</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -92,21 +71,23 @@ m2=0..*
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>580</x>
-      <y>608</y>
-      <w>72</w>
-      <h>12</h>
+      <x>774</x>
+      <y>495</y>
+      <w>126</w>
+      <h>36</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;160.0;10.0</additional_attributes>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1
+m2=1..*</panel_attributes>
+    <additional_attributes>10.0;10.0;120.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>636</x>
-      <y>492</y>
-      <w>560</w>
-      <h>56</h>
+      <x>864</x>
+      <y>225</y>
+      <w>1260</w>
+      <h>126</h>
     </coordinates>
     <panel_attributes>Example of Product data:
 Item #                Product Name   CS(in mL)     C(in case)           P(carton)           PS(carton)             CPP                          GCW(in Kg)                      CL(in cm)                CW(in cm)                 CH(in cm)
@@ -121,10 +102,10 @@ CSD-11100105    KINZA Orange        360          24 Can                Case     
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>468</x>
-      <y>528</y>
-      <w>136</w>
-      <h>48</h>
+      <x>531</x>
+      <y>180</y>
+      <w>306</w>
+      <h>108</h>
     </coordinates>
     <panel_attributes>Example of order data:
 Customer #   Invoice #        Item # SalesQty
@@ -138,10 +119,10 @@ Customer #   Invoice #        Item # SalesQty
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>416</x>
-      <y>748</y>
-      <w>216</w>
-      <h>52</h>
+      <x>441</x>
+      <y>702</y>
+      <w>486</w>
+      <h>117</h>
     </coordinates>
     <panel_attributes>Example of Truck data:
 Truck ID    Truck Name 			      Capacity (Pallets)           MT 	               Priority
@@ -155,10 +136,10 @@ Truck ID    Truck Name 			      Capacity (Pallets)           MT 	               
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>300</x>
-      <y>532</y>
-      <w>116</w>
-      <h>52</h>
+      <x>153</x>
+      <y>189</y>
+      <w>261</w>
+      <h>117</h>
     </coordinates>
     <panel_attributes>Example of customer data:
 customerNo   Latitude      Longitude
@@ -168,5 +149,120 @@ customerNo   Latitude      Longitude
 104166       21.454958      39.207412
 101617       21.771004      39.220411</panel_attributes>
     <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>540</x>
+      <y>459</y>
+      <w>243</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>Invoice
+--
+Invoice #: string
+Item #: string
+SalesQty: long
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>648</x>
+      <y>378</y>
+      <w>45</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=1..*</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>180</x>
+      <y>594</y>
+      <w>189</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>Department
+--
+Department ID: long
+Department Name: string
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>189</x>
+      <y>459</y>
+      <w>180</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>Location
+--
+Latitude: double
+Longitude: double</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>261</x>
+      <y>360</y>
+      <w>36</w>
+      <h>117</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>252</x>
+      <y>513</y>
+      <w>36</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>10.0;90.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>540</x>
+      <y>567</y>
+      <w>207</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>Truck
+--
+Truck ID: 							long
+Truck Name: 						string
+Capacity (Pallets): 				long
+Multiple Trips (# of trips): 	int
+Priority: int 
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>360</x>
+      <y>621</y>
+      <w>198</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=1..*</panel_attributes>
+    <additional_attributes>10.0;10.0;200.0;10.0</additional_attributes>
   </element>
 </diagram>
