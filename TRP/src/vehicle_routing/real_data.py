@@ -87,54 +87,76 @@ for customer_values in customer.values:
         })
 
 # Convert to a pandas DataFrame to display as a table
-table_df = pd.DataFrame(table_rows)
+invoice_df = pd.DataFrame(table_rows)
 
 
 
-
-
-
-
-
-# demand = 50
-# latitude = 21.501795
-# longitude = 39.244198
-# visits = [Visit(
-#     id=str(visit_data[0]),
-#     name=str(visit_data[0]),
-#     location=Location(latitude=visit_data[1], longitude=visit_data[2]),
-#     demand=demand,
-#     min_start_time=datetime.combine(date.today() + timedelta(days=1), MORNING_WINDOW_START),
-#     max_end_time=datetime.combine(date.today() + timedelta(days=1), AFTERNOON_WINDOW_END),
-#     service_duration=timedelta(minutes=SERVICE_DURATION_MINUTES[3]),
-# ) for visit_data in customer.values]
-
-
-# by invoices
+# by customer
+demand = 5
+latitude = 21.501795
+longitude = 39.244198
 visits = [Visit(
     id=str(visit_data[0]),
     name=str(visit_data[0]),
-    location=Location(latitude=visit_data[2], longitude=visit_data[3]),
-    demand=visit_data[1],
+    location=Location(latitude=visit_data[1], longitude=visit_data[2]),
+    demand=demand,
     min_start_time=datetime.combine(date.today() + timedelta(days=1), MORNING_WINDOW_START),
     max_end_time=datetime.combine(date.today() + timedelta(days=1), AFTERNOON_WINDOW_END),
     service_duration=timedelta(minutes=SERVICE_DURATION_MINUTES[3]),
-) for visit_data in table_df.values]
+) for visit_data in customer.values]
+
+
+ # By using limits and diffrent days
+# make partal of invoice if the invoice`s demand total bigger then the limit of turcks and could divide it on the turcks
+# visits = []
+# limit_trucks = (truck["Capacity (Pallets)"] * truck["Multiple Trips\n(# of trips)"]).sum()
+# total_demand = 0
+# day_start = 1
+# # for visit_data in customer.values:
+# for visit_data in invoice_df.head(10).values:
+#     visit = Visit(
+#             id=str(visit_data[0]),
+#             name=str(visit_data[0]),
+#             location=Location(latitude=visit_data[2], longitude=visit_data[3]),
+#             # demand=demand,
+#             demand=visit_data[1],
+#             min_start_time=datetime.combine(date.today() + timedelta(days=day_start), MORNING_WINDOW_START),
+#             max_end_time=datetime.combine(date.today() + timedelta(days=day_start), AFTERNOON_WINDOW_END),
+#             service_duration=timedelta(minutes=SERVICE_DURATION_MINUTES[3]),
+#             )
+#     # total_demand += demand
+#     total_demand += visit_data[1]
+#     if total_demand > limit_trucks:
+#         # We should divide the product from that invoice but for know will not do it...
+#         total_demand = 0
+#         day_start += 1
+#     elif total_demand == limit_trucks:
+#         total_demand = 0
+#         day_start += 1
+#     visits.append(visit)
 
 
 
+# by invoices
+# visits = [Visit(
+#     id=str(visit_data[0]),
+#     name=str(visit_data[0]),
+#     location=Location(latitude=visit_data[2], longitude=visit_data[3]),
+#     demand=visit_data[1],
+#     min_start_time=datetime.combine(date.today() + timedelta(days=1), MORNING_WINDOW_START),
+#     max_end_time=datetime.combine(date.today() + timedelta(days=1), AFTERNOON_WINDOW_END),
+#     service_duration=timedelta(minutes=SERVICE_DURATION_MINUTES[3]),
+# ) for visit_data in table_df.values]
 
 
-
-
-
+# vehicle capacity, start time, end time
 vehicle_start_time = time(7, 30)
 vehicle_count = len(truck)
-dept_latitude = 21.501795
-dept_longitude = 39.244198
+dept_latitude = 21.4339573
+dept_longitude = 39.2199178
 
 # vehicle_capacity = 5
-vehicles = [Vehicle(id=str(truck_data[0]),
+vehicles = [Vehicle(id=str(truck_data[1]),
         capacity=truck_data[2],
         home_location=Location(
             latitude=dept_latitude,
@@ -143,11 +165,29 @@ vehicles = [Vehicle(id=str(truck_data[0]),
             date.today() + timedelta(days=1), vehicle_start_time)
        ) for truck_data in truck.values]
 
+# By using limits and diffrent days
+# vehicles = []
+# for truck_data in truck.values:
+#     for day in range(1, day_start+1):
+#         vehicle = Vehicle(id=f"{truck_data[1]} {day} day",
+#                           capacity=truck_data[2],
+#                           home_location=Location(
+#                               latitude=dept_latitude,
+#                               longitude=dept_longitude),
+#                           departure_time=datetime.combine(
+#                               date.today() + timedelta(days=day), vehicle_start_time)
+#                           ) 
+#         vehicles.append(vehicle)
+
+
+
+
+
 
 
 south_west_corner = Location(latitude=21.501795	, longitude=39.244198)
 north_east_corner = Location(latitude=21.771004, longitude=39.220411)
-VRP = VehicleRoutePlan(name="Kinzia",
+VRP = VehicleRoutePlan(name="Kinza",
                  south_west_corner=south_west_corner,
                  north_east_corner=north_east_corner,
                  vehicles=vehicles,

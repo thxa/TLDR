@@ -177,7 +177,9 @@ function renderRoutes(solution) {
     vehiclesTable.children().remove();
     solution.vehicles.forEach(function (vehicle) {
         getHomeLocationMarker(vehicle).setPopupContent(homeLocationPopupContent(vehicle));
+        console.log(vehicle);
         const {id, capacity, totalDemand, totalDrivingTimeSeconds} = vehicle;
+
         const percentage = totalDemand / capacity * 100;
         const color = colorByVehicle(vehicle);
         vehiclesTable.append(`
@@ -500,10 +502,10 @@ function copyTextToClipboard(id) {
 }
 
 function replaceQuickstartTimefoldAutoHeaderFooter() {
-    const timefoldHeader = $("header#timefold-auto-header");
-    if (timefoldHeader != null) {
-        timefoldHeader.addClass("bg-black")
-        timefoldHeader.append(
+    const EcoRouteHeader = $("header#EcoRoute-auto-header");
+    if (EcoRouteHeader != null) {
+        EcoRouteHeader.addClass("bg-black")
+        EcoRouteHeader.append(
             $(`<div class="container-fluid">
         <nav class="navbar sticky-top navbar-expand-lg navbar-dark shadow mb-3">
           <a class="navbar-brand" href="">
@@ -531,9 +533,9 @@ function replaceQuickstartTimefoldAutoHeaderFooter() {
       </div>`));
     }
 
-    const timefoldFooter = $("footer#timefold-auto-footer");
-    if (timefoldFooter != null) {
-        timefoldFooter.append(
+    const EcoRouteFooter = $("footer#EcoRoute-auto-footer");
+    if (EcoRouteFooter != null) {
+        EcoRouteFooter.append(
             $(`<footer class="bg-black text-white-50">
                <div class="container">
                  <div class="hstack gap-3 p-4">
