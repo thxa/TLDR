@@ -151,6 +151,7 @@ visits = [Visit(
 
 # vehicle capacity, start time, end time
 vehicle_start_time = time(7, 30)
+# vehicle_end_time = time(15, 30)
 vehicle_count = len(truck)
 dept_latitude = 21.4339573
 dept_longitude = 39.2199178
@@ -184,6 +185,8 @@ vehicles = [Vehicle(id=str(truck_data[1]),
 
 
 
+# center_lat = customer['Latitude'].mean()
+# center_lon = customer['Longitude'].mean()
 
 south_west_corner = Location(latitude=21.501795	, longitude=39.244198)
 north_east_corner = Location(latitude=21.771004, longitude=39.220411)

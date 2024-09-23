@@ -90,7 +90,8 @@ for table in tables:
 #|%%--%%| <mjv3LfNFK3|ltBE3179i6>
 
 for table in tables:
-    table.info()
+    # table.info()
+    print(table.isna().sum())
     print("\n")
 
 #|%%--%%| <ltBE3179i6|A7K7x2nzxK>
@@ -119,8 +120,13 @@ print(order.head(5))
 print(product.head(5))
 print(customer.head(5))
 print(truck.head(5))
+  
 
-#|%%--%%| <Vo3wspte9e|zYK7cQ7lZ2>
+#|%%--%%| <Vo3wspte9e|FCehHrom8d>
+# order.isna().sum()
+
+
+#|%%--%%| <FCehHrom8d|zYK7cQ7lZ2>
 r"""°°°
 ## Create SQLite3 Databse
 °°°"""
