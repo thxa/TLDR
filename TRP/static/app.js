@@ -55,7 +55,7 @@ const byVisitTimeline = new vis.Timeline(byVisitPanel, byVisitItemData, byVisitG
 /************************************ Initialize ************************************/
 
 $(document).ready(function () {
-    replaceQuickstartTimefoldAutoHeaderFooter();
+    replaceQuickstartEcoRouteAutoHeaderFooter();
 
     // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     //     maxZoom: 19,
@@ -501,7 +501,7 @@ function copyTextToClipboard(id) {
     document.body.removeChild(dummy);
 }
 
-function replaceQuickstartTimefoldAutoHeaderFooter() {
+function replaceQuickstartEcoRouteAutoHeaderFooter() {
     const EcoRouteHeader = $("header#EcoRoute-auto-header");
     if (EcoRouteHeader != null) {
         EcoRouteHeader.addClass("bg-black")
@@ -509,7 +509,7 @@ function replaceQuickstartTimefoldAutoHeaderFooter() {
             $(`<div class="container-fluid">
         <nav class="navbar sticky-top navbar-expand-lg navbar-dark shadow mb-3">
           <a class="navbar-brand" href="">
-            <img src="/webjars/timefold/img/logo.png" alt="EcoRoute" width="100" height="50">
+            <img src="/webjars/EcoRoute/img/logo.png" alt="EcoRoute" width="100" height="50">
           </a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>

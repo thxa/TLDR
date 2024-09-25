@@ -1,4 +1,4 @@
-function replaceTimefoldAutoHeaderFooter() {
+function replaceEcoRouteAutoHeaderFooter() {
   const EcoRouteHeader = $("header#EcoRoute-auto-header");
   if (EcoRouteHeader != null) {
     EcoRouteHeader.addClass("bg-black")
@@ -6,7 +6,7 @@ function replaceTimefoldAutoHeaderFooter() {
       $(`<div class="container-fluid">
         <nav class="navbar sticky-top navbar-expand-lg navbar-dark shadow mb-3">
           <a class="navbar-brand" href="/">
-            <img src="/webjars/timefold/img/logo.png" alt="EcoRoute logo" width="200">
+            <img src="/webjars/EcoRoute/img/logo.png" alt="EcoRoute logo" width="200">
           </a>
         </nav>
       </div>`));
